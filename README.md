@@ -3,9 +3,12 @@
 This Repository contains some usecases for running Deep Learning experiments on DGX-1
 ### What is this repository for? ###
 
-* PyTorch – Seq2Seq language translation
-* DIGITS – Image segmentation 
-* TensorFlow – Speech recognition
+* [Resnet in TensorFlow using Cifar10 data](https://bitbucket.org/Trace3/poc_dgx-1/src/master/resnet-in-tensorflow/)
+* [Keras pretrained models for image classification inference](https://bitbucket.org/Trace3/poc_dgx-1/src/master/keras-imageclass-inference/)
+* [Keras MiniGoogLeNet for Cifar10 data](https://bitbucket.org/Trace3/poc_dgx-1/src/master/keras-minigooglenet-cifar10/)
+* [Keras fine tune pretrained models for Cifar10 and Distracted Drivers image classification](https://bitbucket.org/Trace3/poc_dgx-1/src/master/keras-finetune-cifar10-distracteddriver/)
+* PyTorch - Seq2Seq language translation
+
 
 ### Some useful docker commands ###
 Show running containers
@@ -33,7 +36,7 @@ It sends SIGTERM first, then, after a grace period, SIGKILL.
 ```
 docker stop <name or id>
 ```
-Use docker attach to attach your terminal’s standard input, output, and error (or any combination of the three) to a running container using the container’s ID or name. This allows you to view its ongoing output or to control it interactively, as though the commands were running directly in your terminal.
+Use docker attach to attach your terminals standard input, output, and error (or any combination of the three) to a running container using the containers ID or name. This allows you to view its ongoing output or to control it interactively, as though the commands were running directly in your terminal.
 Note: The attach command will display the output of the ENTRYPOINT/CMD process. This can appear as if the attach command is hung when in fact the process may simply not be interacting with the terminal at that time.
 
 You can attach to the same contained process multiple times simultaneously, from different sessions on the Docker host.
@@ -45,7 +48,8 @@ docker attach <name or id>
 * exit ==> this will stop the container but will not remove. This is similar to 'docker stop' command. We can start again by "docker start name_or_id" and consequently attach to it later by "docker attach name_or_id" 
 * Ctrl+p+q ==> this will bring back to terminal with out stopping the container. This can be attached by "docker attach name_or_id".  To stop and remove this container either use "docker stop name_or_id" + "docker rm name_or_id" or "docker rm -f name_or_id"
 
-## PyTorch – Seq2Seq language translation ##
+
+## PyTorch  Seq2Seq language translation ##
 [Tutorial link](http://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html)
 
 This tutorial is about translating French to English using Sequence to Sequence Network and Attention. This is a very well written and easy to follow tutorial. Just running the code is not super hard but understanding what is happening and a lot of the DL details are hard to grasp. The tutorial has good links that can be followed. 
@@ -55,9 +59,9 @@ This tutorial is about translating French to English using Sequence to Sequence 
 #### What this code is doing: ####
 1.	Read text file that contains English to French pairs (eng-fra.txt)
 2.	Split the text file into lines, split lines into pairs
-3.	Normalize text – convert Unicode string to plain ASCII, lower case, trim, and remove non-Letter characters
+3.	Normalize text  convert Unicode string to plain ASCII, lower case, trim, and remove non-Letter characters
 4.	Keep only 10 words or less sentences
-5.	Keep only those sentences that translate to the form “I am” or “He is” or “you are” etc
+5.	Keep only those sentences that translate to the form I am or He is or you are etc
 6.	Make word lists from sentences in pairs
 
 #### To run the code: ####
@@ -84,11 +88,6 @@ source deactivate pytorch-py3.6
 exit or Ctrl+p+q
 ```
 
-## DIGITS – Image segmentation ##
-Add DIGITS Tutorial
-
-## TensorFlow – Speech recognition ##
-Add TensorFlow Tutorial
-
 ### Contributors ###
 * Jayeeta Ghosh
+* Eric Hankins

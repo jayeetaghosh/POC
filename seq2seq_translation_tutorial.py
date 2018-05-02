@@ -143,7 +143,7 @@ print(use_cuda)
 ######################################################################
 # We'll need a unique index per word to use as the inputs and targets of
 # the networks later. To keep track of all this we will use a helper class
-# called ``Lang`` which has word â†’ index (``word2index``) and index â†’ word
+# called ``Lang`` which has word → index (``word2index``) and index → word
 # (``index2word``) dictionaries, as well as a count of each word
 # ``word2count`` to use to later replace rare words.
 #
@@ -200,8 +200,8 @@ def normalizeString(s):
 
 ######################################################################
 # To read the data file we will split the file into lines, and then split
-# lines into pairs. The files are all English â†’ Other Language, so if we
-# want to translate from Other Language â†’ English I added the ``reverse``
+# lines into pairs. The files are all English → Other Language, so if we
+# want to translate from Other Language → English I added the ``reverse``
 # flag to reverse the pairs.
 #
 
@@ -307,7 +307,7 @@ print(random.choice(pairs))
 # length and order, which makes it ideal for translation between two
 # languages.
 #
-# Consider the sentence "Je ne suis pas le chat noir" â†’ "I am not the
+# Consider the sentence "Je ne suis pas le chat noir" → "I am not the
 # black cat". Most of the words in the input sentence have a direct
 # translation in the output sentence, but are in slightly different
 # orders, e.g. "chat noir" and "black cat". Because of the "ne/pas"
@@ -317,7 +317,7 @@ print(random.choice(pairs))
 #
 # With a seq2seq model the encoder creates a single vector which, in the
 # ideal case, encodes the "meaning" of the input sequence into a single
-# vector â€” a single point in some N dimensional space of sentences.
+# vector — a single point in some N dimensional space of sentences.
 #
 
 
@@ -881,9 +881,9 @@ evaluateAndShowAttention("c est un jeune directeur plein de talent .")
 # -  Try with a different dataset
 #
 #    -  Another language pair
-#    -  Human â†’ Machine (e.g. IOT commands)
-#    -  Chat â†’ Response
-#    -  Question â†’ Answer
+#    -  Human → Machine (e.g. IOT commands)
+#    -  Chat → Response
+#    -  Question → Answer
 #
 # -  Replace the embeddings with pre-trained word embeddings such as word2vec or
 #    GloVe
