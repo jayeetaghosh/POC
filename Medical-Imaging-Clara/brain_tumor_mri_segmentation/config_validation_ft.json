@@ -1,0 +1,73 @@
+{
+
+    "input_nodes":
+    {
+        "image": "NV_INPUTALL_ITERATORGETNEXT"
+    },
+    "output_nodes":
+    {
+        "model": "NV_OUTPUT_LABEL"
+    },
+    "batch_size": 1,
+    "pre_transforms":
+    [
+        {
+            "name": "transforms.LoadNifty",
+            "fields": "image"
+        },
+        {
+            "name": "transforms.NormalizeNonzeroIntensities",
+            "fields": "image"
+        }
+    ],
+    "post_transforms":
+    [
+        {
+            "name": "transforms.ArgmaxAcrossChannels",
+            "applied_key": "model"
+        },
+        {
+            "name": "transforms.SplitBasedOnLabel",
+            "applied_key": "model",
+            "channel_names": ["background_unused", "TC"]
+        }
+    ],
+    "label_transforms":
+    [
+        {
+            "name": "transforms.LoadNifty",
+            "fields": "label"
+        },
+        {
+            "name": "transforms.BratsConvertLabels",
+            "fields": ["label"],
+            "classes": ["TC"]
+        },
+        {
+            "name": "transforms.SplitAcrossChannels",
+            "applied_key": "label",
+            "channel_names": ["TC_label"]
+        }
+
+    ],
+
+    "writers":
+    [
+        {
+            "applied_key": "TC",
+            "name": "writers.WriteNiftyResults",
+            "dtype": "uint8"
+        }
+    ],
+    "val_metrics":
+    [
+        {
+            "name": "MetricAverageFromArrayDice",
+            "tag" : "mean_dice_TC",
+            "applied_key": "TC",
+            "label_key": "TC_label"
+        }
+    ]
+
+
+}

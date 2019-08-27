@@ -1,0 +1,149 @@
+{
+    "description" : "Example of Brats segmentation. 3 outputs after sigmoid for 3 nested classes (TC,WT,ET).",
+    "image_base_dir" : "/mnt/brdemo/brats2018challenge/",
+    "num_channels": 4,
+    "num_label_channels": 3,
+    "num_classes": 3,
+
+    "batch_size": 1,
+    "epochs": 200,
+    "num_workers": 8,
+    "network_input_size": [224, 224, 128],
+    "num_training_epoch_per_valid": 1,
+
+    "record_step" : "every_epoch",
+    "use_scanning_window" : false,
+    "continue_from_checkpoint_epoch": true,
+    "multi_gpu": false,
+
+    "net_config":
+	    {
+		"name": "SegmResnet",
+		"use_vae": false,
+		"blocks_down": "1,2,2,4",
+		"blocks_up": "1,1,1",
+		"init_filters": 8,
+		"use_groupnorm": true,
+		"use_groupnormG": 8,
+		"reg_weight": 1e-5,
+		"dropout_prob": 0.2,
+		"final_activation": "sigmoid"
+
+	    },
+
+    "auxiliary_outputs":
+	    [
+		{
+		    "name": "common.metrics.metrics.dice_metric_masked_output",
+		    "is_onehot_targets": true,
+		    "is_independent_predictions": true,
+		    "tags": ["dice", "dice_tc", "dice_wt", "dice_et"]
+		}
+	    ],
+
+   "train":
+    {
+        "loss":
+        {
+            "name": "losses.dice_loss",
+            "squared_pred": true,
+            "is_onehot_targets": true
+        },
+        "optimizer":
+        {
+            "name": "Adam",
+            "lr": 1e-3
+        },
+
+        "lr_policy":
+        {
+            "name": "lr_policy.ReduceLR_Poly",
+            "poly_power": 0.9
+    
+        },
+        "pre_transforms":
+        [
+            {
+                "name": "transforms.LoadNifty",
+                "fields": ["image", "label"]
+            },
+            {
+                "name": "transforms.BratsConvertLabels",
+                "fields": ["label"],
+                "classes": ["TC", "WT", "ET"]
+            },
+            {
+                "name": "transforms.CropSubVolumeRandomWithinBounds",
+                "size": [224, 224, 128],
+                "fields": ["image","label"]
+            },
+            {
+                "name": "transforms.FlipAxisRandom",
+                "fields": ["image","label"],
+                "axis": [0,1,2]
+            },
+            {
+                "name": "transforms.NormalizeNonzeroIntensities",
+                "fields": "image"
+            },
+            {
+                "name": "transforms.AugmentIntensityRandomScaleShift",
+                "fields": "image"
+            }
+        ]
+
+    },
+  
+  "validate":
+    {
+        "pre_transforms":
+        [
+            {
+                "name": "transforms.LoadNifty",
+                "fields": ["image", "label"]
+            },
+            {
+                "name": "transforms.BratsConvertLabels",
+                "fields": ["label"],
+                "classes": ["TC", "WT", "ET"]
+            },
+            {
+                "name": "transforms.CropSubVolumeCenter",
+                "size": [224, 224, 128],
+                "fields": ["image","label"]
+            },
+            {
+                "name": "transforms.NormalizeNonzeroIntensities",
+                "fields": "image"
+            }
+        ],
+
+        "metrics":
+        [
+            {
+                "name": "MetricAverage",
+                "tag" : "mean_dice",
+                "stopping_metric": true,
+                "applied_key": "val_dice"
+            },
+            {
+                "name": "MetricAverage",
+                "tag" : "mean_dice_tc",
+                "applied_key": "val_dice_tc"
+            },
+            {
+                "name": "MetricAverage",
+                "tag" : "mean_dice_wt",
+                "applied_key": "val_dice_wt"
+            },
+            {
+                "name": "MetricAverage",
+                "tag" : "mean_dice_et",
+                "applied_key": "val_dice_et"
+            }
+
+        ]
+
+    }
+
+}

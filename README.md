@@ -7,7 +7,9 @@ This Repository contains some usecases for running Deep Learning experiments on 
 * [Keras pretrained models for image classification inference](https://bitbucket.org/Trace3/poc_dgx-1/src/master/keras-imageclass-inference/)
 * [Keras MiniGoogLeNet for Cifar10 data](https://bitbucket.org/Trace3/poc_dgx-1/src/master/keras-minigooglenet-cifar10/)
 * [Keras fine tune pretrained models for Cifar10 and Distracted Drivers image classification](https://bitbucket.org/Trace3/poc_dgx-1/src/master/keras-finetune-cifar10-distracteddriver/)
+* [Predictive Maintenance using LSTM](https://bitbucket.org/Trace3/poc_dgx-1/src/master/Predictive-Maintenance-using-LSTM/)
 * PyTorch - Seq2Seq language translation
+* [Medical-Imaging-Clara](https://bitbucket.org/Trace3/poc_dgx-1/src/master/Medical-Imaging-Clara/)
 
 
 ### Some useful docker commands ###

@@ -1,0 +1,98 @@
+{
+
+    "input_nodes":
+    {
+        "image": "NV_INPUTALL_ITERATORGETNEXT"
+    },
+    "output_nodes":
+    {
+        "model": "NV_OUTPUT_LABEL"
+    },
+    "batch_size": 1,
+    "pre_transforms":
+    [
+        {
+            "name": "transforms.LoadNifty",
+            "fields": "image"
+        },
+        {
+            "name": "transforms.NormalizeNonzeroIntensities",
+            "fields": "image"
+        }
+    ],
+    "post_transforms":
+    [
+        {
+            "name": "transforms.ThresholdValues",
+            "applied_key": "model",
+            "threshold": 0.5
+        },
+        {
+            "name": "transforms.SplitAcrossChannels",
+            "applied_key": "model",
+            "squeeze": true,
+            "channel_names": ["TC", "WT", "ET"]
+        }
+    ],
+    "label_transforms":
+    [
+        {
+            "name": "transforms.LoadNifty",
+            "fields": "label"
+        },
+        {
+            "name": "transforms.BratsConvertLabels",
+            "fields": ["label"],
+            "classes": ["TC", "WT", "ET"]
+        },
+        {
+            "name": "transforms.SplitAcrossChannels",
+            "applied_key": "label",
+            "channel_names": ["TC_label", "WT_label", "ET_label"]
+        }
+
+    ],
+
+
+    "writers":
+    [
+        {
+            "applied_key": "TC",
+            "name": "writers.WriteNiftyResults",
+            "dtype": "uint8"
+        },
+        {
+            "applied_key": "WT",
+            "name": "writers.WriteNiftyResults",
+            "dtype": "uint8"
+        },
+        {
+            "applied_key": "ET",
+            "name": "writers.WriteNiftyResults",
+            "dtype": "uint8"
+        }
+    ],
+    "val_metrics":
+    [
+        {
+            "name": "MetricAverageFromArrayDice",
+            "tag" : "mean_dice_TC",
+            "applied_key": "TC",
+            "label_key": "TC_label"
+        },
+        {
+            "name": "MetricAverageFromArrayDice",
+            "tag" : "mean_dice_WT",
+            "applied_key": "WT",
+            "label_key": "WT_label"
+        },
+        {
+            "name": "MetricAverageFromArrayDice",
+            "tag" : "mean_dice_ET",
+            "applied_key": "ET",
+            "label_key": "ET_label"
+        }
+    ]
+
+
+}
